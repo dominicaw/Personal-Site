@@ -1,0 +1,194 @@
+/* 
+* Variables
+*/
+:root {
+    --black: #121212;
+    --grey: #252525;
+    --light-grey: #e0e0e0e7;
+    --white: white;
+    --off-white: #E3E3E3;
+    --blue: #2CACFC;
+    --dark-blue: #FF9400;
+}
+
+.dark-theme {
+    --background: var(--black);
+    --background-accent: var(--grey);
+
+    --text: var(--off-white);
+    --text-accent: var(--blue);
+}
+
+.light-theme {
+    --background: var(--light-grey);
+    --background-accent: var(--white);
+
+    --text: var(--black);
+    --text-accent: var(--dark-blue);
+}
+
+/* 
+* Base
+*/
+html {
+    background: var(--background);
+}
+
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: Roboto Mono, Courier New, monospace;
+    font-size: 1rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* 
+* Container
+*/
+.container {
+    max-width: 1000px;
+    width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+}
+
+@media(max-width:768px) {
+    .container {
+        max-width: 650px;
+    }
+}
+
+
+@media(max-width:425px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
+/* 
+* Typography
+*/
+h1 {
+    font-size: clamp(1.4rem, 1.1176rem + 1.4118vw, 2rem);
+}
+
+h1,
+h2 {
+    background: var(--background-accent);
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+}
+
+a {
+    color: var(--text-accent);
+}
+
+/* 
+* Fixes visual bug with emojis on windows 
+*/
+.font-weight-400 {
+    font-weight: 400;
+}
+
+/* 
+* Text Selection Custom Colors
+*/
+::-moz-selection {
+    background: var(--text-accent);
+}
+
+::selection {
+    background: var(--text-accent);
+}
+
+a::-moz-selection {
+    background: var(--text);
+}
+
+a::selection {
+    background: var(--text);
+}
+
+/* 
+* h1 Cursor Blink Animation
+*/
+h1::after {
+    content: "";
+    width: 16px;
+    height: 3px;
+    margin-left: 5px;
+    border-radius: 0.45rem;
+    background: var(--text);
+    display: inline-block;
+    animation: blink 0.8s infinite alternate;
+}
+
+@keyframes blink {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 
+* Theme Toggler
+*/
+.theme-toggler {
+    background: var(--background-accent);
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    margin-bottom: 2rem;
+}
+
+.switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.switch div {
+    position: relative;
+    display: block;
+    background: var(--background);
+    width: 50px;
+    border-radius: 2rem;
+    padding: 0 5px;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin: 0 1rem;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    background-color: var(--text);
+    transition: 0.4s;
+    border-radius: 34px;
+    height: 12px;
+    width: 12px;
+    display: inline-block;
+    position: relative;
+}
+
+input:checked+.slider {
+    transform: translateX(28px);
+}
