@@ -1,0 +1,115 @@
+<script>
+  import Clock from './Clock.svelte'
+
+  let { windows = [], onstartclick = () => {} } = $props()
+</script>
+
+<footer class="taskbar" aria-label="Taskbar">
+  <button class="start-btn" onclick={onstartclick} aria-label="Start" aria-expanded="false">
+    <img
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='1' width='6' height='6' fill='%23f00'/%3E%3Crect x='9' y='1' width='6' height='6' fill='%2300b'/%3E%3Crect x='1' y='9' width='6' height='6' fill='%230a0'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%23fa0'/%3E%3C/svg%3E"
+      alt=""
+      width="16"
+      height="16"
+      aria-hidden="true"
+    />
+    Start
+  </button>
+
+  <div class="taskbar-divider" aria-hidden="true"></div>
+
+  <div class="taskbar-windows" role="group" aria-label="Open windows">
+    {#each windows as win (win.id)}
+      <button
+        class="taskbar-win-btn"
+        class:active={win.active}
+        aria-pressed={win.active}
+        onclick={win.onclick}
+      >
+        {win.label}
+      </button>
+    {/each}
+  </div>
+
+  <div class="taskbar-tray" role="status" aria-label="System tray">
+    <Clock />
+  </div>
+</footer>
+
+<style>
+  .taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 28px;
+    background: #c0c0c0;
+    border-top: 2px solid #ffffff;
+    box-shadow: inset 0 1px 0 #dfdfdf;
+    display: flex;
+    align-items: center;
+    padding: 2px 4px;
+    gap: 4px;
+    z-index: 1000;
+  }
+
+  .start-btn {
+    height: 22px;
+    padding: 0 8px;
+    font-weight: bold;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .taskbar-divider {
+    width: 0;
+    height: 20px;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #ffffff;
+    margin: 0 2px;
+    flex-shrink: 0;
+  }
+
+  .taskbar-windows {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 2px;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  .taskbar-win-btn {
+    height: 22px;
+    min-width: 130px;
+    max-width: 200px;
+    padding: 0 10px;
+    font-size: 11px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .taskbar-win-btn.active {
+    border-color: #808080 #dfdfdf #dfdfdf #808080;
+    box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #dfdfdf;
+  }
+
+  .taskbar-tray {
+    height: 22px;
+    padding: 0 10px;
+    border: 1px solid;
+    border-color: #808080 #ffffff #ffffff #808080;
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: 'Pixelated MS Sans Serif', 'MS Sans Serif', Arial, sans-serif;
+  }
+</style>
