@@ -50,8 +50,6 @@
   }
 
   .icon-label {
-    font-size: 11px;
-    font-family: 'Pixelated MS Sans Serif', 'MS Sans Serif', Arial, sans-serif;
     text-align: center;
     line-height: 1.3;
     color: white;

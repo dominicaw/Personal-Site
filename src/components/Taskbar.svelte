@@ -5,9 +5,9 @@
 </script>
 
 <footer class="taskbar" aria-label="Taskbar">
-  <button class="start-btn" onclick={onstartclick} aria-label="Start" aria-expanded="false">
+  <button class="start-btn" onclick={() => onstartclick()} aria-label="Start" aria-expanded="false">
     <img
-      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='1' width='6' height='6' fill='%23f00'/%3E%3Crect x='9' y='1' width='6' height='6' fill='%2300b'/%3E%3Crect x='1' y='9' width='6' height='6' fill='%230a0'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%23fa0'/%3E%3C/svg%3E"
+      src="/icons/windows.png"
       alt=""
       width="16"
       height="16"
@@ -24,7 +24,7 @@
         class="taskbar-win-btn"
         class:active={win.active}
         aria-pressed={win.active}
-        onclick={win.onclick}
+        onclick={() => win.onclick()}
       >
         {win.label}
       </button>
@@ -57,7 +57,6 @@
     height: 22px;
     padding: 0 8px;
     font-weight: bold;
-    font-size: 11px;
     display: flex;
     align-items: center;
     gap: 5px;
@@ -88,7 +87,6 @@
     min-width: 130px;
     max-width: 200px;
     padding: 0 10px;
-    font-size: 11px;
     text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -107,9 +105,7 @@
     border-color: #808080 #ffffff #ffffff #808080;
     display: flex;
     align-items: center;
-    font-size: 11px;
     white-space: nowrap;
     flex-shrink: 0;
-    font-family: 'Pixelated MS Sans Serif', 'MS Sans Serif', Arial, sans-serif;
   }
 </style>

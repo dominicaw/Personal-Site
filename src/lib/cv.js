@@ -1,37 +1,49 @@
 export const cv = `Dominica Wannenburg
-Front End Engineer | Cape Town, South Africa
+Senior Front End Engineer
+Cape Town, South Africa
 ============================================
 
 ABOUT
 -----
-Howzit :) I'm a front end engineer and user interface
-designer living in Cape Town, South Africa.
+Howzit :) I'm a senior front end engineer and user interface designer living in Cape Town, South Africa.
 
 
 SKILLS
 ------
-The Usual Suspects:  HTML, CSS, JavaScript, TypeScript
-Backend:             PHP, Ruby
-Frameworks:          React, Next.js, Vue.js, Svelte, Astro,
-                     Tailwind, Laravel, Ruby on Rails
-Other:               Adobe CC, Storybook, Jest, making memes
+The Usual Suspects:
+HTML, CSS, JavaScript, TypeScript
+
+Frameworks:
+React, NextJS, NuxtJS, Vue, Svelte, Astro, Tailwind, Vite
+
+Other:
+Storybook, Vitest, Playwright, Cypress, screenshotting you when your internet freezes and making a slack emoji
 
 
 EXPERIENCE
 ----------
-2023 - present    Front End Engineer
-                  Platform45 (platform45.com)
+2025 - present
+Senior Front End Engineer
+stub (stub.africa)
 
-2022 - 2023       Front End Engineer
-                  OfferZen (offerzen.com)
+2023 - 2025
+Senior Front End Engineer
+Platform45 (platform45.com)
 
-2019 - 2022       Front End Engineer & UI Designer
-                  BikeHub (bikehub.co.za)
+2022 - 2023
+Front End Engineer
+OfferZen (offerzen.com)
 
-2019 - 2022       Freelance Drupal Engineer
+2019 - 2022
+Front End Engineer & UI Designer
+BikeHub (bikehub.co.za)
 
-2016 - 2018       Junior Engineer
-                  This Is Machine (thisismachine.co.za)
+2019 - 2022
+Freelance Drupal Engineer
+
+2016 - 2018
+Junior Engineer
+This Is Machine (thisismachine.co.za)
 
 
 WORK

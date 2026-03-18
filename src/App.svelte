@@ -1,7 +1,8 @@
 <script>
-  import NotepadWindow from './lib/NotepadWindow.svelte'
-  import DesktopIcon from './lib/DesktopIcon.svelte'
-  import Taskbar from './lib/Taskbar.svelte'
+  import NotepadWindow from './components/NotepadWindow.svelte'
+  import RecycleBinWindow from './components/RecycleBinWindow.svelte'
+  import DesktopIcon from './components/DesktopIcon.svelte'
+  import Taskbar from './components/Taskbar.svelte'
 
   let notepadVisible = $state(true)
   let notepadMinimized = $state(false)
@@ -16,6 +17,19 @@
     }
   }
 
+  let recycleVisible = $state(false)
+  let recycleMinimized = $state(false)
+
+  function toggleRecycle() {
+    if (recycleMinimized || !recycleVisible) {
+      recycleMinimized = false
+      recycleVisible = true
+    } else {
+      recycleMinimized = true
+      recycleVisible = false
+    }
+  }
+
   const taskbarWindows = $derived([
     {
       id: 'notepad',
@@ -23,6 +37,12 @@
       active: notepadVisible && !notepadMinimized,
       onclick: toggleNotepad,
     },
+    ...(recycleVisible ? [{
+      id: 'recycle',
+      label: 'Recycle Bin',
+      active: recycleVisible && !recycleMinimized,
+      onclick: toggleRecycle,
+    }] : []),
   ])
 </script>
 
@@ -30,11 +50,11 @@
   <ul class="desktop-icons" aria-label="Desktop icons">
     <li>
       <DesktopIcon label="dominicaw.txt" onclick={toggleNotepad}>
-        <img src="/icons/notepad.png" alt="" width="32" height="32" />
+        <img src="/icons/notepad_file.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
-      <DesktopIcon label="Recycle Bin">
+      <DesktopIcon label="Recycle Bin" onclick={toggleRecycle}>
         <img src="/icons/recycle_bin.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
@@ -46,6 +66,13 @@
       filename="dominicaw.txt"
       onminimize={() => { notepadMinimized = true; notepadVisible = false }}
       onclose={() => { notepadVisible = false; notepadMinimized = false }}
+    />
+  {/if}
+
+  {#if recycleVisible && !recycleMinimized}
+    <RecycleBinWindow
+      onminimize={() => { recycleMinimized = true; recycleVisible = false }}
+      onclose={() => { recycleVisible = false; recycleMinimized = false }}
     />
   {/if}
 </main>
@@ -73,9 +100,4 @@
     z-index: 5;
   }
 
-  @media (max-width: 680px) {
-    .desktop-icons {
-      display: none;
-    }
-  }
 </style>
