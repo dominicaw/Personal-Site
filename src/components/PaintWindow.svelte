@@ -75,9 +75,7 @@
   })
 
   const menus = [
-    'File', 'Edit', 'View',
-    { label: 'Image', onclick: clearCanvas },
-    'Help',
+    'File', 'Edit', 'View', 'Image', 'Help',
   ]
 </script>
 
