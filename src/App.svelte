@@ -31,6 +31,8 @@
     }
   }
 
+  const dialUpAudio = new Audio('/sound/dial-up.mp3')
+
   let ieVisible = $state(false)
   let ieMinimized = $state(false)
 
@@ -108,6 +110,7 @@
 
   {#if ieVisible && !ieMinimized}
     <IEWindow
+      audio={dialUpAudio}
       onminimize={() => { ieMinimized = true; ieVisible = false }}
       onclose={() => { ieVisible = false; ieMinimized = false }}
     />

@@ -1,7 +1,7 @@
 <script>
   import { createDraggable } from '../lib/draggable.svelte.js'
 
-  let { onminimize = () => {}, onclose = () => {} } = $props()
+  let { audio, onminimize = () => {}, onclose = () => {} } = $props()
 
   const drag = createDraggable()
 
@@ -10,7 +10,7 @@
   let progress = $state(0)
 
   $effect(() => {
-    const audio = new Audio('/sound/dial-up.mp3')
+    audio.currentTime = 0
     audio.play()
 
     const start = Date.now()
