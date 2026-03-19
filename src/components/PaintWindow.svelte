@@ -57,15 +57,6 @@
     drawing = false
   }
 
-  function clearCanvas() {
-    const ctx = getCtx()
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = '#ffffff'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-    }
-  }
-
   $effect(() => {
     if (canvas) {
       const ctx = canvas.getContext('2d')

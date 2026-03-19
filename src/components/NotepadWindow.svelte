@@ -32,7 +32,7 @@
 
   @media (max-width: 680px) {
     textarea {
-      height: calc(100svh - 100px);
+      height: calc(100svh - 132px);
     }
   }
 </style>
