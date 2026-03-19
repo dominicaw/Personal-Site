@@ -3,13 +3,15 @@
 
   let { windows = [], onstartclick = () => {} } = $props()
 
+  const startupSound = new Audio('/sound/start-up.mp3')
   let clickCount = $state(0)
 
   function handleStartClick() {
     clickCount++
     if (clickCount >= 5) {
       clickCount = 0
-      new Audio('/sound/start-up.mp3').play()
+      startupSound.currentTime = 0
+      startupSound.play()
     }
     onstartclick()
   }
