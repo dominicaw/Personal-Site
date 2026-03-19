@@ -2,6 +2,7 @@
   import NotepadWindow from './components/NotepadWindow.svelte'
   import RecycleBinWindow from './components/RecycleBinWindow.svelte'
   import IEWindow from './components/IEWindow.svelte'
+  import PaintWindow from './components/PaintWindow.svelte'
   import DesktopIcon from './components/DesktopIcon.svelte'
   import Taskbar from './components/Taskbar.svelte'
 
@@ -51,6 +52,19 @@
     }
   }
 
+  let paintVisible = $state(false)
+  let paintMinimized = $state(false)
+
+  function togglePaint() {
+    if (paintMinimized || !paintVisible) {
+      paintMinimized = false
+      paintVisible = true
+    } else {
+      paintMinimized = true
+      paintVisible = false
+    }
+  }
+
   const taskbarWindows = $derived([
     {
       id: 'notepad',
@@ -70,6 +84,12 @@
       active: ieVisible && !ieMinimized,
       onclick: toggleIE,
     }] : []),
+    ...(paintVisible ? [{
+      id: 'paint',
+      label: 'untitled - Paint',
+      active: paintVisible && !paintMinimized,
+      onclick: togglePaint,
+    }] : []),
   ])
 </script>
 
@@ -83,6 +103,11 @@
     <li>
       <DesktopIcon label="Internet Explorer" onclick={openIE}>
         <img src="/icons/msie.png" alt="" width="32" height="32" />
+      </DesktopIcon>
+    </li>
+    <li>
+      <DesktopIcon label="Paint" onclick={togglePaint}>
+        <img src="/icons/paint_old.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
@@ -113,6 +138,13 @@
       audio={dialUpAudio}
       onminimize={() => { ieMinimized = true; ieVisible = false }}
       onclose={() => { ieVisible = false; ieMinimized = false }}
+    />
+  {/if}
+
+  {#if paintVisible && !paintMinimized}
+    <PaintWindow
+      onminimize={() => { paintMinimized = true; paintVisible = false }}
+      onclose={() => { paintVisible = false; paintMinimized = false }}
     />
   {/if}
 </main>

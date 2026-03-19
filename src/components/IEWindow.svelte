@@ -85,8 +85,7 @@
         </div>
       {:else}
         <div class="page-content">
-          <h1>Welcome to the Internet</h1>
-          <p>You've got mail.</p>
+          <img src="/images/rick.gif" alt="Rick Astley" class="rick-gif" />
         </div>
       {/if}
     </div>
@@ -227,17 +226,14 @@
   /* Page content */
   .page-content {
     text-align: center;
-    padding: 40px;
+    padding: 0;
+    width: 100%;
   }
 
-  .page-content h1 {
-    font-size: 18px;
-    margin: 0 0 12px;
-  }
-
-  .page-content p {
-    font-size: 13px;
-    margin: 0;
+  .rick-gif {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   /* Status bar */
