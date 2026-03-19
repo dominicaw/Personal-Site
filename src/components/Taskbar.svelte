@@ -2,10 +2,21 @@
   import Clock from './Clock.svelte'
 
   let { windows = [], onstartclick = () => {} } = $props()
+
+  let clickCount = $state(0)
+
+  function handleStartClick() {
+    clickCount++
+    if (clickCount >= 5) {
+      clickCount = 0
+      new Audio('/sound/start-up.mp3').play()
+    }
+    onstartclick()
+  }
 </script>
 
 <footer class="taskbar" aria-label="Taskbar">
-  <button class="start-btn" onclick={() => onstartclick()} aria-label="Start" aria-expanded="false">
+  <button class="start-btn" onclick={() => handleStartClick()} aria-label="Start" aria-expanded="false">
     <img
       src="/icons/windows.png"
       alt=""
@@ -42,7 +53,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 28px;
+    height: 32px;
     background: #c0c0c0;
     border-top: 2px solid #ffffff;
     box-shadow: inset 0 1px 0 #dfdfdf;

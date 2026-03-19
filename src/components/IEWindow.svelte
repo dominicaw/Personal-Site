@@ -35,7 +35,7 @@
   <div class="address-bar" aria-label="Address bar">
     <span class="address-label">Address</span>
     <div class="address-input" role="textbox" aria-readonly="true" aria-label="Current URL">
-      {loading ? 'Connecting...' : 'about:dominica'}
+      {loading ? 'Connecting...' : 'hah:gotem'}
     </div>
     <button class="go-btn" tabindex="-1">Go</button>
   </div>
