@@ -1,6 +1,4 @@
 <script>
-  import { onMount, onDestroy } from 'svelte'
-
   let time = $state('')
   let iso = $state('')
 
@@ -12,14 +10,17 @@
     iso = now.toISOString()
   }
 
-  let interval
-
-  onMount(() => {
+  $effect(() => {
     tick()
-    interval = setInterval(tick, 10_000)
+    const msUntilNextMinute = (60 - new Date().getSeconds()) * 1000
+    const timeout = setTimeout(() => {
+      tick()
+      const interval = setInterval(tick, 60_000)
+      cleanup = () => clearInterval(interval)
+    }, msUntilNextMinute)
+    let cleanup = () => clearTimeout(timeout)
+    return () => cleanup()
   })
-
-  onDestroy(() => clearInterval(interval))
 </script>
 
 <time datetime={iso} aria-label="Current time: {time}">{time}</time>
