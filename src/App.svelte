@@ -31,7 +31,7 @@
     }
   }
 
-  const DIAL_UP_DURATION = 28_000 // ms
+  const DIAL_UP_DURATION = 26_000 // ms
 
   let ieVisible = $state(false)
   let ieMinimized = $state(false)
