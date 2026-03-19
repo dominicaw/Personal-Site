@@ -1,9 +1,8 @@
 <script>
-  import { createDraggable } from '../lib/draggable.svelte.js'
+  import Window from './Window.svelte'
+  import MenuBar from './MenuBar.svelte'
 
   let { onminimize = () => {}, onclose = () => {} } = $props()
-
-  const drag = createDraggable()
 
   let canvas = $state(null)
   let drawing = $state(false)
@@ -74,154 +73,75 @@
       ctx.fillRect(0, 0, canvas.width, canvas.height)
     }
   })
+
+  const menus = [
+    'File', 'Edit', 'View',
+    { label: 'Image', onclick: clearCanvas },
+    'Help',
+  ]
 </script>
 
-<div
-  class="window paint-window"
-  bind:this={drag.windowEl}
-  role="dialog"
-  aria-labelledby="paint-title"
-  aria-modal="false"
->
-  <div
-    class="title-bar"
-    role="toolbar"
-    aria-label="Window controls"
-    tabindex="-1"
-    bind:this={drag.titleBarEl}
-    onmousedown={drag.onTitleMousedown}
-    ontouchstart={drag.onTitleTouchstart}
-  >
-    <div class="title-bar-text" id="paint-title">untitled - Paint</div>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize" onclick={() => onminimize()}></button>
-      <button aria-label="Maximize"></button>
-      <button aria-label="Close" onclick={() => onclose()}></button>
-    </div>
-  </div>
+<Window title="untitled - Paint" id="paint" top="30px" left="100px" width="660px" maxWidth="calc(100vw - 16px)" {onminimize} {onclose}>
+  <MenuBar label="Paint menu" items={menus} />
 
-  <div class="window-body paint-body">
-    <nav class="paint-menubar" aria-label="Paint menu">
-      <ul role="menubar">
-        <li role="none"><button role="menuitem" tabindex="-1">File</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Edit</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">View</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1" onclick={clearCanvas}>Image</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Help</button></li>
-      </ul>
-    </nav>
-
-    <div class="paint-workspace">
-      <div class="paint-toolbox">
-        <div class="tool-grid">
-          <button class="tool-btn active" aria-label="Pencil" title="Pencil">
-            <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
-              <path d="M12.1 1.5l2.4 2.4-9.8 9.8-3.2.8.8-3.2z"/>
-            </svg>
-          </button>
-        </div>
-        <div class="size-picker">
-          {#each [1, 3, 5, 8] as size}
-            <button
-              class="size-btn"
-              class:active={brushSize === size}
-              onclick={() => brushSize = size}
-              aria-label="Brush size {size}"
-            >
-              <span class="size-dot" style="width:{Math.min(size + 2, 10)}px;height:{Math.min(size + 2, 10)}px"></span>
-            </button>
-          {/each}
-        </div>
+  <div class="paint-workspace">
+    <div class="paint-toolbox">
+      <div class="tool-grid">
+        <button class="tool-btn active" aria-label="Pencil" title="Pencil">
+          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+            <path d="M12.1 1.5l2.4 2.4-9.8 9.8-3.2.8.8-3.2z"/>
+          </svg>
+        </button>
       </div>
-
-      <div class="canvas-area">
-        <canvas
-          bind:this={canvas}
-          width="540"
-          height="340"
-          onmousedown={startDraw}
-          onmousemove={draw}
-          onmouseup={stopDraw}
-          onmouseleave={stopDraw}
-          ontouchstart={startDraw}
-          ontouchmove={draw}
-          ontouchend={stopDraw}
-        ></canvas>
-      </div>
-    </div>
-
-    <div class="paint-palette" aria-label="Color palette">
-      <div class="current-colors">
-        <div class="color-fg" style="background:{color}"></div>
-      </div>
-      <div class="color-grid">
-        {#each palette as c}
+      <div class="size-picker">
+        {#each [1, 3, 5, 8] as size}
           <button
-            class="color-swatch"
-            class:active={color === c}
-            style="background:{c}"
-            onclick={() => color = c}
-            aria-label="Color {c}"
-          ></button>
+            class="size-btn"
+            class:active={brushSize === size}
+            onclick={() => brushSize = size}
+            aria-label="Brush size {size}"
+          >
+            <span class="size-dot" style="width:{Math.min(size + 2, 10)}px;height:{Math.min(size + 2, 10)}px"></span>
+          </button>
         {/each}
       </div>
     </div>
+
+    <div class="canvas-area">
+      <canvas
+        bind:this={canvas}
+        width="540"
+        height="340"
+        onmousedown={startDraw}
+        onmousemove={draw}
+        onmouseup={stopDraw}
+        onmouseleave={stopDraw}
+        ontouchstart={startDraw}
+        ontouchmove={draw}
+        ontouchend={stopDraw}
+      ></canvas>
+    </div>
   </div>
-</div>
+
+  <div class="paint-palette" aria-label="Color palette">
+    <div class="current-colors">
+      <div class="color-fg" style="background:{color}"></div>
+    </div>
+    <div class="color-grid">
+      {#each palette as c}
+        <button
+          class="color-swatch"
+          class:active={color === c}
+          style="background:{c}"
+          onclick={() => color = c}
+          aria-label="Color {c}"
+        ></button>
+      {/each}
+    </div>
+  </div>
+</Window>
 
 <style>
-  .paint-window {
-    position: absolute;
-    top: 30px;
-    left: 100px;
-    width: 660px;
-    max-width: calc(100vw - 16px);
-    z-index: 10;
-  }
-
-  .title-bar {
-    cursor: move;
-    user-select: none;
-  }
-
-  .paint-body {
-    padding: 0 !important;
-    display: flex;
-    flex-direction: column;
-    background: #c0c0c0;
-  }
-
-  /* Menu bar */
-  .paint-menubar {
-    background: #c0c0c0;
-    border-bottom: 1px solid #808080;
-    flex-shrink: 0;
-  }
-
-  .paint-menubar ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 1px 2px;
-    gap: 0;
-  }
-
-  .paint-menubar button {
-    background: transparent;
-    border: 1px solid transparent;
-    box-shadow: none;
-    padding: 2px 8px;
-    line-height: 1.4;
-  }
-
-  .paint-menubar button:hover,
-  .paint-menubar button:focus {
-    background: #000080;
-    color: white;
-    border-color: transparent;
-    outline: none;
-  }
-
   /* Workspace layout */
   .paint-workspace {
     display: flex;
@@ -354,12 +274,6 @@
   }
 
   @media (max-width: 680px) {
-    .paint-window {
-      top: 8px;
-      left: 8px;
-      width: calc(100vw - 16px);
-    }
-
     .paint-toolbox {
       width: 36px;
       padding: 2px;

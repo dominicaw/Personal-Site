@@ -1,9 +1,8 @@
 <script>
-  import { createDraggable } from '../lib/draggable.svelte.js'
+  import Window from './Window.svelte'
+  import MenuBar from './MenuBar.svelte'
 
   let { onminimize = () => {}, onclose = () => {} } = $props()
-
-  const drag = createDraggable()
 
   const files = [
     { name: 'work_life_balance.exe', size: '0 KB', type: 'Application', icon: '⚙️' },
@@ -15,126 +14,42 @@
   ]
 </script>
 
-<div
-  class="window recycle-window"
-  bind:this={drag.windowEl}
-  role="dialog"
-  aria-labelledby="recycle-title"
-  aria-modal="false"
->
-  <div
-    class="title-bar"
-    role="toolbar"
-    aria-label="Window controls"
-    tabindex="-1"
-    bind:this={drag.titleBarEl}
-    onmousedown={drag.onTitleMousedown}
-    ontouchstart={drag.onTitleTouchstart}
-  >
-    <div class="title-bar-text" id="recycle-title">Recycle Bin</div>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize" onclick={() => onminimize()}></button>
-      <button aria-label="Maximize"></button>
-      <button aria-label="Close" onclick={() => onclose()}></button>
+<Window title="Recycle Bin" id="recycle" top="60px" left="200px" width="480px" maxWidth="calc(100vw - 16px)" {onminimize} {onclose}>
+  <MenuBar label="Explorer menu" items={['File', 'Edit', 'View', 'Help']} />
+
+  <div class="address-bar" aria-label="Address">
+    <span class="address-label">Address</span>
+    <div class="address-input" role="textbox" aria-readonly="true" aria-label="Current location">
+      <img src="/icons/recycle_bin.png" alt="" width="16" height="16" />
+      Recycle Bin
     </div>
   </div>
 
-  <div class="window-body recycle-body">
-    <nav class="explorer-menubar" aria-label="Explorer menu">
-      <ul role="menubar">
-        <li role="none"><button role="menuitem" tabindex="-1">File</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Edit</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">View</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Help</button></li>
-      </ul>
-    </nav>
-
-    <div class="address-bar" aria-label="Address">
-      <span class="address-label">Address</span>
-      <div class="address-input" role="textbox" aria-readonly="true" aria-label="Current location">
-        <img src="/icons/recycle_bin.png" alt="" width="16" height="16" />
-        Recycle Bin
-      </div>
-    </div>
-
-    <table class="file-list" aria-label="Recycle Bin contents">
-      <thead>
+  <table class="file-list" aria-label="Recycle Bin contents">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Size</th>
+        <th scope="col">Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each files as file}
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Size</th>
-          <th scope="col">Type</th>
+          <td><span aria-hidden="true">{file.icon}</span> {file.name}</td>
+          <td>{file.size}</td>
+          <td>{file.type}</td>
         </tr>
-      </thead>
-      <tbody>
-        {#each files as file}
-          <tr>
-            <td><span aria-hidden="true">{file.icon}</span> {file.name}</td>
-            <td>{file.size}</td>
-            <td>{file.type}</td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+      {/each}
+    </tbody>
+  </table>
 
-    <div class="status-bar" role="status">
-      {files.length} object(s)
-    </div>
+  <div class="status-bar" role="status">
+    {files.length} object(s)
   </div>
-</div>
+</Window>
 
 <style>
-  .recycle-window {
-    position: absolute;
-    top: 60px;
-    left: 200px;
-    width: 480px;
-    max-width: calc(100vw - 16px);
-    z-index: 10;
-  }
-
-  .title-bar {
-    cursor: move;
-    user-select: none;
-  }
-
-  .recycle-body {
-    padding: 0 !important;
-    display: flex;
-    flex-direction: column;
-    background: white;
-  }
-
-  /* Menu bar */
-  .explorer-menubar {
-    background: #c0c0c0;
-    border-bottom: 1px solid #808080;
-    flex-shrink: 0;
-  }
-
-  .explorer-menubar ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 1px 2px;
-    gap: 0;
-  }
-
-  .explorer-menubar button {
-    background: transparent;
-    border: 1px solid transparent;
-    box-shadow: none;
-    padding: 2px 8px;
-    line-height: 1.4;
-  }
-
-  .explorer-menubar button:hover,
-  .explorer-menubar button:focus {
-    background: #000080;
-    color: white;
-    border-color: transparent;
-    outline: none;
-  }
-
   /* Address bar */
   .address-bar {
     display: flex;
@@ -198,13 +113,5 @@
     border-top: 1px solid #808080;
     background: #c0c0c0;
     flex-shrink: 0;
-  }
-
-  @media (max-width: 680px) {
-    .recycle-window {
-      top: 8px;
-      left: 8px;
-      width: calc(100vw - 16px);
-    }
   }
 </style>

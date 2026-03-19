@@ -46,20 +46,6 @@ Junior Engineer
 This Is Machine (thisismachine.co.za)
 
 
-WORK
-----
-offerzen.com/employers/find-developers
-  Anonymised candidate list helping companies evaluate
-  OfferZen. Built with Next.js, Ruby on Rails, MongoDB.
-
-bikehub.co.za
-  UI design and front end engineering. Solved user
-  problems with Adobe XD, Vue.js, Sass, Bootstrap.
-
-elitetruck.co.za
-  Custom Drupal 9 build with contact forms and blog.
-
-
 CONNECT
 -------
 LinkedIn:  linkedin.com/in/dominica

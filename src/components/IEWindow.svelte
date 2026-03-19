@@ -1,9 +1,8 @@
 <script>
-  import { createDraggable } from '../lib/draggable.svelte.js'
+  import Window from './Window.svelte'
+  import MenuBar from './MenuBar.svelte'
 
   let { audio, onminimize = () => {}, onclose = () => {} } = $props()
-
-  const drag = createDraggable()
 
   const DIAL_UP_DURATION = 26_000 // ms
   let loading = $state(true)
@@ -30,125 +29,39 @@
   })
 </script>
 
-<div
-  class="window ie-window"
-  bind:this={drag.windowEl}
-  role="dialog"
-  aria-labelledby="ie-title"
-  aria-modal="false"
->
-  <div
-    class="title-bar"
-    role="toolbar"
-    aria-label="Window controls"
-    tabindex="-1"
-    bind:this={drag.titleBarEl}
-    onmousedown={drag.onTitleMousedown}
-    ontouchstart={drag.onTitleTouchstart}
-  >
-    <div class="title-bar-text" id="ie-title">Microsoft Internet Explorer</div>
-    <div class="title-bar-controls">
-      <button aria-label="Minimize" onclick={() => onminimize()}></button>
-      <button aria-label="Maximize"></button>
-      <button aria-label="Close" onclick={() => onclose()}></button>
+<Window title="Microsoft Internet Explorer" id="ie" top="40px" left="160px" width="620px" maxWidth="calc(100vw - 16px)" {onminimize} {onclose}>
+  <MenuBar label="IE menu" items={['File', 'Edit', 'View', 'Favorites', 'Tools', 'Help']} />
+
+  <div class="address-bar" aria-label="Address bar">
+    <span class="address-label">Address</span>
+    <div class="address-input" role="textbox" aria-readonly="true" aria-label="Current URL">
+      {loading ? 'Connecting...' : 'about:dominica'}
     </div>
+    <button class="go-btn" tabindex="-1">Go</button>
   </div>
 
-  <div class="window-body ie-body">
-    <nav class="ie-menubar" aria-label="IE menu">
-      <ul role="menubar">
-        <li role="none"><button role="menuitem" tabindex="-1">File</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Edit</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">View</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Favorites</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Tools</button></li>
-        <li role="none"><button role="menuitem" tabindex="-1">Help</button></li>
-      </ul>
-    </nav>
-
-    <div class="address-bar" aria-label="Address bar">
-      <span class="address-label">Address</span>
-      <div class="address-input" role="textbox" aria-readonly="true" aria-label="Current URL">
-        {loading ? 'Connecting...' : 'about:dominica'}
+  <div class="ie-content" aria-live="polite">
+    {#if loading}
+      <div class="connecting">
+        <p class="connecting-text">Connecting to the internet...</p>
+        <div class="progress-track" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin="0" aria-valuemax="100" aria-label="Loading">
+          <div class="progress-fill" style="width: {progress}%"></div>
+        </div>
+        <p class="progress-label">{Math.round(progress)}%</p>
       </div>
-      <button class="go-btn" tabindex="-1">Go</button>
-    </div>
-
-    <div class="ie-content" aria-live="polite">
-      {#if loading}
-        <div class="connecting">
-          <p class="connecting-text">Connecting to the internet...</p>
-          <div class="progress-track" role="progressbar" aria-valuenow={Math.round(progress)} aria-valuemin="0" aria-valuemax="100" aria-label="Loading">
-            <div class="progress-fill" style="width: {progress}%"></div>
-          </div>
-          <p class="progress-label">{Math.round(progress)}%</p>
-        </div>
-      {:else}
-        <div class="page-content">
-          <img src="/images/rick.gif" alt="Rick Astley" class="rick-gif" />
-        </div>
-      {/if}
-    </div>
-
-    <div class="ie-statusbar" role="status">
-      {loading ? 'Connecting...' : 'Done'}
-    </div>
+    {:else}
+      <div class="page-content">
+        <img src="/images/rick.gif" alt="Rick Astley" class="rick-gif" />
+      </div>
+    {/if}
   </div>
-</div>
+
+  <div class="ie-statusbar" role="status">
+    {loading ? 'Connecting...' : 'Done'}
+  </div>
+</Window>
 
 <style>
-  .ie-window {
-    position: absolute;
-    top: 40px;
-    left: 160px;
-    width: 620px;
-    max-width: calc(100vw - 16px);
-    z-index: 10;
-  }
-
-  .title-bar {
-    cursor: move;
-    user-select: none;
-  }
-
-  .ie-body {
-    padding: 0 !important;
-    display: flex;
-    flex-direction: column;
-    background: white;
-  }
-
-  /* Menu bar */
-  .ie-menubar {
-    background: #c0c0c0;
-    border-bottom: 1px solid #808080;
-    flex-shrink: 0;
-  }
-
-  .ie-menubar ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 1px 2px;
-    gap: 0;
-  }
-
-  .ie-menubar button {
-    background: transparent;
-    border: 1px solid transparent;
-    box-shadow: none;
-    padding: 2px 8px;
-    line-height: 1.4;
-  }
-
-  .ie-menubar button:hover,
-  .ie-menubar button:focus {
-    background: #000080;
-    color: white;
-    border-color: transparent;
-    outline: none;
-  }
-
   /* Address bar */
   .address-bar {
     display: flex;
@@ -245,12 +158,6 @@
   }
 
   @media (max-width: 680px) {
-    .ie-window {
-      top: 8px;
-      left: 8px;
-      width: calc(100vw - 16px);
-    }
-
     .ie-content {
       min-height: calc(100svh - 200px);
     }
