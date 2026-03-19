@@ -1,6 +1,7 @@
 <script>
   import NotepadWindow from './components/NotepadWindow.svelte'
   import RecycleBinWindow from './components/RecycleBinWindow.svelte'
+  import IEWindow from './components/IEWindow.svelte'
   import DesktopIcon from './components/DesktopIcon.svelte'
   import Taskbar from './components/Taskbar.svelte'
 
@@ -30,6 +31,42 @@
     }
   }
 
+  const DIAL_UP_DURATION = 28_000 // ms
+
+  let ieVisible = $state(false)
+  let ieMinimized = $state(false)
+  let ieLoading = $state(true)
+  let ieProgress = $state(0)
+
+  function openIE() {
+    ieLoading = true
+    ieProgress = 0
+    ieMinimized = false
+    ieVisible = true
+
+    new Audio('/sound/dial-up.mp3').play()
+
+    const start = Date.now()
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start
+      ieProgress = Math.min((elapsed / DIAL_UP_DURATION) * 100, 100)
+      if (elapsed >= DIAL_UP_DURATION) {
+        clearInterval(interval)
+        ieLoading = false
+      }
+    }, 200)
+  }
+
+  function toggleIE() {
+    if (ieMinimized || !ieVisible) {
+      ieMinimized = false
+      ieVisible = true
+    } else {
+      ieMinimized = true
+      ieVisible = false
+    }
+  }
+
   const taskbarWindows = $derived([
     {
       id: 'notepad',
@@ -43,6 +80,12 @@
       active: recycleVisible && !recycleMinimized,
       onclick: toggleRecycle,
     }] : []),
+    ...(ieVisible ? [{
+      id: 'ie',
+      label: 'Microsoft Internet Explorer',
+      active: ieVisible && !ieMinimized,
+      onclick: toggleIE,
+    }] : []),
   ])
 </script>
 
@@ -51,6 +94,11 @@
     <li>
       <DesktopIcon label="dominicaw.txt" onclick={toggleNotepad}>
         <img src="/icons/notepad_file.png" alt="" width="32" height="32" />
+      </DesktopIcon>
+    </li>
+    <li>
+      <DesktopIcon label="Internet Explorer" onclick={openIE}>
+        <img src="/icons/msie.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
@@ -73,6 +121,15 @@
     <RecycleBinWindow
       onminimize={() => { recycleMinimized = true; recycleVisible = false }}
       onclose={() => { recycleVisible = false; recycleMinimized = false }}
+    />
+  {/if}
+
+  {#if ieVisible && !ieMinimized}
+    <IEWindow
+      loading={ieLoading}
+      progress={ieProgress}
+      onminimize={() => { ieMinimized = true; ieVisible = false }}
+      onclose={() => { ieVisible = false; ieMinimized = false }}
     />
   {/if}
 </main>
