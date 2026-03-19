@@ -5,146 +5,75 @@
   import PaintWindow from './components/PaintWindow.svelte'
   import DesktopIcon from './components/DesktopIcon.svelte'
   import Taskbar from './components/Taskbar.svelte'
+  import { createWindowState } from './lib/window-state.svelte.js'
 
-  let notepadVisible = $state(true)
-  let notepadMinimized = $state(false)
-
-  function toggleNotepad() {
-    if (notepadMinimized || !notepadVisible) {
-      notepadMinimized = false
-      notepadVisible = true
-    } else {
-      notepadMinimized = true
-      notepadVisible = false
-    }
-  }
-
-  let recycleVisible = $state(false)
-  let recycleMinimized = $state(false)
-
-  function toggleRecycle() {
-    if (recycleMinimized || !recycleVisible) {
-      recycleMinimized = false
-      recycleVisible = true
-    } else {
-      recycleMinimized = true
-      recycleVisible = false
-    }
-  }
+  const notepad = createWindowState(true)
+  const recycle = createWindowState()
+  const ie = createWindowState()
+  const paint = createWindowState()
 
   const dialUpAudio = new Audio('/sound/dial-up.mp3')
 
-  let ieVisible = $state(false)
-  let ieMinimized = $state(false)
-
-  function openIE() {
-    ieMinimized = false
-    ieVisible = true
-  }
-
-  function toggleIE() {
-    if (ieMinimized || !ieVisible) {
-      ieMinimized = false
-      ieVisible = true
-    } else {
-      ieMinimized = true
-      ieVisible = false
-    }
-  }
-
-  let paintVisible = $state(false)
-  let paintMinimized = $state(false)
-
-  function togglePaint() {
-    if (paintMinimized || !paintVisible) {
-      paintMinimized = false
-      paintVisible = true
-    } else {
-      paintMinimized = true
-      paintVisible = false
-    }
-  }
-
   const taskbarWindows = $derived([
-    {
-      id: 'notepad',
-      label: 'dominicaw.txt - Notepad',
-      active: notepadVisible && !notepadMinimized,
-      onclick: toggleNotepad,
-    },
-    ...(recycleVisible ? [{
-      id: 'recycle',
-      label: 'Recycle Bin',
-      active: recycleVisible && !recycleMinimized,
-      onclick: toggleRecycle,
-    }] : []),
-    ...(ieVisible ? [{
-      id: 'ie',
-      label: 'Microsoft Internet Explorer',
-      active: ieVisible && !ieMinimized,
-      onclick: toggleIE,
-    }] : []),
-    ...(paintVisible ? [{
-      id: 'paint',
-      label: 'untitled - Paint',
-      active: paintVisible && !paintMinimized,
-      onclick: togglePaint,
-    }] : []),
+    { id: 'notepad', label: 'dominicaw.txt - Notepad', active: notepad.shown, onclick: notepad.toggle },
+    ...(recycle.visible ? [{ id: 'recycle', label: 'Recycle Bin', active: recycle.shown, onclick: recycle.toggle }] : []),
+    ...(ie.visible ? [{ id: 'ie', label: 'Microsoft Internet Explorer', active: ie.shown, onclick: ie.toggle }] : []),
+    ...(paint.visible ? [{ id: 'paint', label: 'untitled - Paint', active: paint.shown, onclick: paint.toggle }] : []),
   ])
 </script>
 
 <main class="desktop" aria-label="Desktop">
   <ul class="desktop-icons" aria-label="Desktop icons">
     <li>
-      <DesktopIcon label="dominicaw.txt" onclick={toggleNotepad}>
+      <DesktopIcon label="dominicaw.txt" onclick={notepad.toggle}>
         <img src="/icons/notepad_file.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
-      <DesktopIcon label="Internet Explorer" onclick={openIE}>
+      <DesktopIcon label="Internet Explorer" onclick={ie.open}>
         <img src="/icons/msie.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
-      <DesktopIcon label="Paint" onclick={togglePaint}>
+      <DesktopIcon label="Paint" onclick={paint.toggle}>
         <img src="/icons/paint_old.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
-      <DesktopIcon label="Recycle Bin" onclick={toggleRecycle}>
+      <DesktopIcon label="Recycle Bin" onclick={recycle.toggle}>
         <img src="/icons/recycle_bin.png" alt="" width="32" height="32" />
       </DesktopIcon>
     </li>
   </ul>
 
-  {#if notepadVisible && !notepadMinimized}
+  {#if notepad.shown}
     <NotepadWindow
       title="Notepad"
       filename="dominicaw.txt"
-      onminimize={() => { notepadMinimized = true; notepadVisible = false }}
-      onclose={() => { notepadVisible = false; notepadMinimized = false }}
+      onminimize={notepad.minimize}
+      onclose={notepad.close}
     />
   {/if}
 
-  {#if recycleVisible && !recycleMinimized}
+  {#if recycle.shown}
     <RecycleBinWindow
-      onminimize={() => { recycleMinimized = true; recycleVisible = false }}
-      onclose={() => { recycleVisible = false; recycleMinimized = false }}
+      onminimize={recycle.minimize}
+      onclose={recycle.close}
     />
   {/if}
 
-  {#if ieVisible && !ieMinimized}
+  {#if ie.shown}
     <IEWindow
       audio={dialUpAudio}
-      onminimize={() => { ieMinimized = true; ieVisible = false }}
-      onclose={() => { ieVisible = false; ieMinimized = false }}
+      onminimize={ie.minimize}
+      onclose={ie.close}
     />
   {/if}
 
-  {#if paintVisible && !paintMinimized}
+  {#if paint.shown}
     <PaintWindow
-      onminimize={() => { paintMinimized = true; paintVisible = false }}
-      onclose={() => { paintVisible = false; paintMinimized = false }}
+      onminimize={paint.minimize}
+      onclose={paint.close}
     />
   {/if}
 </main>
