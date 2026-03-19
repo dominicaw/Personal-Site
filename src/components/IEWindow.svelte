@@ -1,9 +1,33 @@
 <script>
   import { createDraggable } from '../lib/draggable.svelte.js'
 
-  let { loading = true, progress = 0, onminimize = () => {}, onclose = () => {} } = $props()
+  let { onminimize = () => {}, onclose = () => {} } = $props()
 
   const drag = createDraggable()
+
+  const DIAL_UP_DURATION = 26_000 // ms
+  let loading = $state(true)
+  let progress = $state(0)
+
+  $effect(() => {
+    const audio = new Audio('/sound/dial-up.mp3')
+    audio.play()
+
+    const start = Date.now()
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start
+      progress = Math.min((elapsed / DIAL_UP_DURATION) * 100, 100)
+      if (elapsed >= DIAL_UP_DURATION) {
+        clearInterval(interval)
+        loading = false
+      }
+    }, 200)
+
+    return () => {
+      audio.pause()
+      clearInterval(interval)
+    }
+  })
 </script>
 
 <div

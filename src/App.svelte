@@ -31,39 +31,12 @@
     }
   }
 
-  const DIAL_UP_DURATION = 26_000 // ms
-
   let ieVisible = $state(false)
   let ieMinimized = $state(false)
-  let ieLoading = $state(true)
-  let ieProgress = $state(0)
-  let ieAudio = null
-  let ieInterval = null
-
-  function stopIEAudio() {
-    if (ieAudio) { ieAudio.pause(); ieAudio = null }
-    if (ieInterval) { clearInterval(ieInterval); ieInterval = null }
-  }
 
   function openIE() {
-    stopIEAudio()
-    ieLoading = true
-    ieProgress = 0
     ieMinimized = false
     ieVisible = true
-
-    ieAudio = new Audio('/sound/dial-up.mp3')
-    ieAudio.play()
-
-    const start = Date.now()
-    ieInterval = setInterval(() => {
-      const elapsed = Date.now() - start
-      ieProgress = Math.min((elapsed / DIAL_UP_DURATION) * 100, 100)
-      if (elapsed >= DIAL_UP_DURATION) {
-        stopIEAudio()
-        ieLoading = false
-      }
-    }, 200)
   }
 
   function toggleIE() {
@@ -135,10 +108,8 @@
 
   {#if ieVisible && !ieMinimized}
     <IEWindow
-      loading={ieLoading}
-      progress={ieProgress}
       onminimize={() => { ieMinimized = true; ieVisible = false }}
-      onclose={() => { stopIEAudio(); ieVisible = false; ieMinimized = false }}
+      onclose={() => { ieVisible = false; ieMinimized = false }}
     />
   {/if}
 </main>
