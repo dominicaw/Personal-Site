@@ -240,11 +240,6 @@
       padding: 2px;
     }
 
-    .tool-btn {
-      width: 24px;
-      height: 24px;
-    }
-
     .size-btn {
       width: 24px;
     }

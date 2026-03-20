@@ -1,5 +1,4 @@
-export const credits = `
-CREDITS
+export const credits = `CREDITS
 ============================================
 
 win98icons.alexmeub.com
