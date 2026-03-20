@@ -26,22 +26,22 @@
   <ul class="desktop-icons" aria-label="Desktop icons">
     <li>
       <DesktopIcon label="dominicaw.txt" onclick={notepad.toggle}>
-        <img src="/icons/notepad_file.png" alt="" width="32" height="32" />
+        <img src="/icons/notepad_file.png" alt="notepad" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
       <DesktopIcon label="Internet Explorer" onclick={ie.open}>
-        <img src="/icons/msie.png" alt="" width="32" height="32" />
+        <img src="/icons/msie.png" alt="internet explorer" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
       <DesktopIcon label="Paint" onclick={paint.toggle}>
-        <img src="/icons/paint_old.png" alt="" width="32" height="32" />
+        <img src="/icons/paint_old.png" alt="paint" width="32" height="32" />
       </DesktopIcon>
     </li>
     <li>
       <DesktopIcon label="Recycle Bin" onclick={recycle.toggle}>
-        <img src="/icons/recycle_bin.png" alt="" width="32" height="32" />
+        <img src="/icons/recycle_bin.png" alt="recycle bin" width="32" height="32" />
       </DesktopIcon>
     </li>
   </ul>

@@ -1,5 +1,5 @@
 {
-  "name": "tmp",
+  "name": "dominicaw",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,8 +15,5 @@
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
     "svelte": "^5.53.7",
     "vite": "^8.0.0"
-  },
-  "dependencies": {
-    "98.css": "^0.1.21"
   }
 }

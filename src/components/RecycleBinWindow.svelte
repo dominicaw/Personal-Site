@@ -5,12 +5,12 @@
   let { onminimize = () => {}, onclose = () => {} } = $props()
 
   const files = [
-    { name: 'work_life_balance.exe', size: '0 KB', type: 'Application', icon: '⚙️' },
-    { name: 'free_time.doc', size: '1 KB', type: 'Document', icon: '📄' },
-    { name: 'sleep_schedule.xls', size: '2 KB', type: 'Spreadsheet', icon: '📊' },
-    { name: 'social_life.lnk', size: '1 KB', type: 'Shortcut', icon: '🔗' },
-    { name: 'gym_membership.url', size: '1 KB', type: 'URL', icon: '🌐' },
-    { name: 'imposter_syndrome.dll', size: '999 KB', type: 'System file', icon: '⚙️' },
+    { name: 'work_life_balance.exe', size: '0 KB', type: 'Application', icon: '/icons/executable.png' },
+    { name: 'free_time.doc', size: '1 KB', type: 'Document', icon: '/icons/notepad_file.png' },
+    { name: 'sleep_schedule.xls', size: '2 KB', type: 'Spreadsheet', icon: '/icons/chart.png' },
+    { name: 'social_life.lnk', size: '1 KB', type: 'Shortcut', icon: '/icons/computer_gear.png' },
+    { name: 'gym_membership.url', size: '1 KB', type: 'URL', icon: '/icons/url.png' },
+    { name: 'imposter_syndrome.dll', size: '999 KB', type: 'System file', icon: '/icons/executable.png' },
   ]
 </script>
 
@@ -20,7 +20,7 @@
   <div class="address-bar" aria-label="Address">
     <span class="address-label">Address</span>
     <div class="address-input" role="textbox" aria-readonly="true" aria-label="Current location">
-      <img src="/icons/recycle_bin.png" alt="" width="16" height="16" />
+      <img src="/icons/recycle_bin.png" alt="recycle_bin" width="16" height="16" />
       Recycle Bin
     </div>
   </div>
@@ -36,7 +36,7 @@
     <tbody>
       {#each files as file}
         <tr>
-          <td><span aria-hidden="true">{file.icon}</span> {file.name}</td>
+          <td><img src={file.icon} alt={file.name} aria-hidden="true" /> <span>{file.name}</span></td>
           <td>{file.size}</td>
           <td>{file.type}</td>
         </tr>
@@ -99,6 +99,14 @@
     padding: 2px 8px;
     border-bottom: 1px solid #dfdfdf;
     white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .file-list td img {
+    vertical-align: middle;
+    margin-right: 5px;
+    height: 16px;
+    width: 16px;
   }
 
   .file-list tbody tr:hover {

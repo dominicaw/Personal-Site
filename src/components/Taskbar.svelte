@@ -10,8 +10,7 @@
     clickCount++
     if (clickCount >= 5) {
       clickCount = 0
-      startupSound.currentTime = 0
-      startupSound.play()
+      if (startupSound.paused) startupSound.play()
     }
     onstartclick()
   }
@@ -21,7 +20,7 @@
   <button class="start-btn" onclick={() => handleStartClick()} aria-label="Start" aria-expanded="false">
     <img
       src="/icons/windows.png"
-      alt=""
+      alt="start"
       width="16"
       height="16"
       aria-hidden="true"
