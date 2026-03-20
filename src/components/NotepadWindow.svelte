@@ -3,16 +3,17 @@
   import Window from './Window.svelte'
   import MenuBar from './MenuBar.svelte'
 
-  let { title = 'Notepad', filename = 'untitled.txt', onminimize = () => {}, onclose = () => {} } = $props()
+  /** @type {{ title?: string, filename?: string, content?: string, id?: string, top?: string, left?: string, onminimize?: () => void, onclose?: () => void }} */
+  let { title = 'Notepad', filename = 'untitled.txt', content = cv, id = 'notepad', top = '36px', left = '120px', onminimize = () => {}, onclose = () => {} } = $props()
 </script>
 
-<Window title="{filename} - {title}" id="notepad" top="36px" left="120px" width="580px" maxWidth="calc(100vw - 130px)" {onminimize} {onclose}>
+<Window title="{filename} - {title}" {id} {top} {left} width="580px" maxWidth="calc(100vw - 130px)" {onminimize} {onclose}>
   <MenuBar label="Notepad menu" items={['File', 'Edit', 'Search', 'Help']} />
   <textarea
     readonly
-    aria-label="Dominica Wannenburg — CV"
+    aria-label="{filename}"
     spellcheck="false"
-    value={cv}
+    value={content}
   ></textarea>
 </Window>
 

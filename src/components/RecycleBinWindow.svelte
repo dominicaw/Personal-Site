@@ -2,7 +2,7 @@
   import Window from './Window.svelte'
   import MenuBar from './MenuBar.svelte'
 
-  let { onminimize = () => {}, onclose = () => {} } = $props()
+  let { onminimize = () => {}, onclose = () => {}, onopencredits = () => {} } = $props()
 
   const files = [
     { name: 'work_life_balance.exe', size: '0 KB', type: 'Application', icon: '/icons/executable.png' },
@@ -11,6 +11,7 @@
     { name: 'social_life.lnk', size: '1 KB', type: 'Shortcut', icon: '/icons/computer_gear.png' },
     { name: 'gym_membership.url', size: '1 KB', type: 'URL', icon: '/icons/url.png' },
     { name: 'imposter_syndrome.dll', size: '999 KB', type: 'System file', icon: '/icons/executable.png' },
+    { name: 'credits.txt', size: '1 KB', type: 'Text Document', icon: '/icons/notepad_file.png', onclick: () => onopencredits() },
   ]
 </script>
 
@@ -35,7 +36,7 @@
     </thead>
     <tbody>
       {#each files as file}
-        <tr>
+        <tr onclick={() => file.onclick?.()} class:clickable={file.onclick}>
           <td><img src={file.icon} alt={file.name} aria-hidden="true" /> <span>{file.name}</span></td>
           <td>{file.size}</td>
           <td>{file.type}</td>
@@ -112,6 +113,10 @@
   .file-list tbody tr:hover {
     background: #000080;
     color: white;
+  }
+
+  .file-list tbody tr.clickable {
+    cursor: pointer;
   }
 
   /* Status bar */

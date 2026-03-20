@@ -6,11 +6,13 @@
   import DesktopIcon from './components/DesktopIcon.svelte'
   import Taskbar from './components/Taskbar.svelte'
   import { createWindowState } from './lib/window-state.svelte.js'
+  import { credits } from './lib/credits.js'
 
   const notepad = createWindowState(true)
   const recycle = createWindowState()
   const ie = createWindowState()
   const paint = createWindowState()
+  const creditsWindow = createWindowState()
 
   const dialUpAudio = new Audio('/sound/dial-up.mp3')
 
@@ -19,6 +21,7 @@
     ...(recycle.visible ? [{ id: 'recycle', label: 'Recycle Bin', active: recycle.shown, onclick: recycle.toggle }] : []),
     ...(ie.visible ? [{ id: 'ie', label: 'Microsoft Internet Explorer', active: ie.shown, onclick: ie.toggle }] : []),
     ...(paint.visible ? [{ id: 'paint', label: 'untitled - Paint', active: paint.shown, onclick: paint.toggle }] : []),
+    ...(creditsWindow.visible ? [{ id: 'credits', label: 'credits.txt - Notepad', active: creditsWindow.shown, onclick: creditsWindow.toggle }] : []),
   ])
 </script>
 
@@ -59,6 +62,7 @@
     <RecycleBinWindow
       onminimize={recycle.minimize}
       onclose={recycle.close}
+      onopencredits={creditsWindow.open}
     />
   {/if}
 
@@ -67,6 +71,18 @@
       audio={dialUpAudio}
       onminimize={ie.minimize}
       onclose={ie.close}
+    />
+  {/if}
+
+  {#if creditsWindow.shown}
+    <NotepadWindow
+      filename="credits.txt"
+      content={credits}
+      id="credits"
+      top="80px"
+      left="160px"
+      onminimize={creditsWindow.minimize}
+      onclose={creditsWindow.close}
     />
   {/if}
 
