@@ -75,13 +75,6 @@
 
   <div class="paint-workspace">
     <div class="paint-toolbox">
-      <div class="tool-grid">
-        <button class="tool-btn active" aria-label="Pencil" title="Pencil">
-          <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
-            <path d="M12.1 1.5l2.4 2.4-9.8 9.8-3.2.8.8-3.2z"/>
-          </svg>
-        </button>
-      </div>
       <div class="size-picker">
         {#each [1, 3, 5, 8] as size}
           <button
@@ -147,27 +140,6 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-  }
-
-  .tool-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2px;
-  }
-
-  .tool-btn {
-    width: 28px;
-    height: 28px;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 0;
-  }
-
-  .tool-btn.active {
-    box-shadow: inset 1px 1px #808080, inset -1px -1px #fff;
-    background: #dfdfdf;
   }
 
   .size-picker {
